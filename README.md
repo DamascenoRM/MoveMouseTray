@@ -1,7 +1,3 @@
-### Descrição do Projeto no GitHub
-
----
-
 # MoveMouseTray
 
 MoveMouseTray é um utilitário simples para Windows que simula a atividade do mouse para impedir que softwares de monitoramento de presença, como o Microsoft Teams, identifiquem a ausência do usuário. O programa movimenta o mouse periodicamente após um período de inatividade, garantindo que o sistema não entre em estado de repouso ou sinalize ausência.
