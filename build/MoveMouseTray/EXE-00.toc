@@ -73,7 +73,7 @@
  [],
  False,
  False,
- 1718644413,
+ 1718664233,
  [('runw.exe',
    'D:\\Workspaces\\MoveMouseTray\\MoveMouseTray\\.venv\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\runw.exe',
    'EXECUTABLE')],

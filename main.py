@@ -1,9 +1,11 @@
-import pyautogui
+import random
 import time
 from threading import Thread, Event
-from pynput import mouse, keyboard
+
+import pyautogui
 import pystray
 from PIL import Image, ImageDraw
+from pynput import mouse, keyboard
 
 # Configurações de inatividade
 INACTIVITY_TIMEOUT = 60  # Tempo limite de inatividade em segundos
@@ -18,29 +20,12 @@ mouse_moving = False
 stop_event = Event()
 
 
-def on_move(x, y):
-    global last_activity_time
+def on_activity(x=None, y=None, button=None, pressed=None, key=None):
+    global last_activity_time, mouse_moving
     last_activity_time = time.time()
-
-
-def on_click(x, y, button, pressed):
-    global last_activity_time
-    last_activity_time = time.time()
-
-
-def on_scroll(x, y, dx, dy):
-    global last_activity_time
-    last_activity_time = time.time()
-
-
-def on_press(key):
-    global last_activity_time
-    last_activity_time = time.time()
-
-
-def on_release(key):
-    global last_activity_time
-    last_activity_time = time.time()
+    if mouse_moving:
+        mouse_moving = False
+        stop_event.clear()
 
 
 def move_mouse():
@@ -49,44 +34,51 @@ def move_mouse():
         stop_event.wait()  # Aguarda até que stop_event seja sinalizado para continuar
         if not running:
             break
-        current_position = pyautogui.position()
-        new_position = (current_position[0] + 10, current_position[1])
 
+        # Pega a posição atual do mouse
+        current_position = pyautogui.position()
+
+        # Gera uma nova posição aleatória para mover o mouse
+        x_random = random.randint(-100, 100)
+        y_random = random.randint(-100, 100)
+        new_position = (current_position[0] + x_random, current_position[1] + y_random)
+
+        # Move o mouse para a nova posição aleatória
         pyautogui.moveTo(new_position, duration=0.25)
         time.sleep(0.25)
-        pyautogui.moveTo(current_position, duration=0.25)
+
+        # Gera outra posição aleatória para mover o mouse de volta
+        x_random = random.randint(-100, 100)
+        y_random = random.randint(-100, 100)
+        final_position = (new_position[0] + x_random, new_position[1] + y_random)
+
+        # Move o mouse para a posição final aleatória
+        pyautogui.moveTo(final_position, duration=0.25)
         time.sleep(MOVE_INTERVAL)
 
 
 def check_inactivity():
     global mouse_moving
     while running:
-        current_time = time.time()
-        if current_time - last_activity_time > INACTIVITY_TIMEOUT and not mouse_moving:
+        if time.time() - last_activity_time > INACTIVITY_TIMEOUT:
             mouse_moving = True
             stop_event.set()  # Permite que o movimento do mouse continue
         else:
-            mouse_moving = False
             stop_event.clear()  # Pausa o movimento do mouse
         time.sleep(1)
 
 
 def create_image():
-    # Cria uma imagem para o ícone da bandeja
-    width = 64
-    height = 64
+    width, height = 64, 64
     image = Image.new('RGB', (width, height), (255, 255, 255))
     draw = ImageDraw.Draw(image)
-    draw.rectangle(
-        (width // 2 - 10, height // 2 - 10, width // 2 + 10, height // 2 + 10),
-        fill=(0, 0, 0))
+    draw.rectangle((width // 2 - 10, height // 2 - 10, width // 2 + 10, height // 2 + 10), fill=(0, 0, 0))
     return image
 
 
 def start_program(icon, item):
-    global running, last_activity_time
+    global running
     running = True
-    last_activity_time = time.time()
     stop_event.clear()
 
 
@@ -115,20 +107,16 @@ def setup_tray_icon():
 
 
 if __name__ == "__main__":
-    # Configura os ouvintes para mouse e teclado
-    mouse_listener = mouse.Listener(on_move=on_move, on_click=on_click, on_scroll=on_scroll)
-    keyboard_listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+    mouse_listener = mouse.Listener(on_move=on_activity, on_click=on_activity, on_scroll=on_activity)
+    keyboard_listener = keyboard.Listener(on_press=on_activity, on_release=on_activity)
 
     mouse_listener.start()
     keyboard_listener.start()
 
-    # Inicia as threads para monitorar inatividade e mover o mouse
     Thread(target=check_inactivity, daemon=True).start()
     Thread(target=move_mouse, daemon=True).start()
 
-    # Configura o ícone da bandeja
     setup_tray_icon()
 
-    # Para ouvintes ao encerrar
     mouse_listener.stop()
     keyboard_listener.stop()
