@@ -1,12 +1,14 @@
 # MoveMouseTray
 
-MoveMouseTray é um utilitário simples para Windows que simula a atividade do mouse para impedir que softwares de monitoramento de presença, como o Microsoft Teams, identifiquem a ausência do usuário. O programa movimenta o mouse periodicamente após um período de inatividade, garantindo que o sistema não entre em estado de repouso ou sinalize ausência.
+MoveMouseTray é um utilitário avançado para Windows que simula a atividade do mouse para impedir que softwares de monitoramento de presença, como o Microsoft Teams, identifiquem a ausência do usuário. O programa movimenta o mouse periodicamente após um período de inatividade, garantindo que o sistema não entre em estado de repouso ou sinalize ausência.
 
 ## Funcionalidades
 
 - **Detecção de Inatividade:** Monitora a atividade do mouse e do teclado para detectar quando o usuário está inativo.
 - **Movimentação Automática do Mouse:** Movimenta o mouse automaticamente após um período de inatividade configurável.
 - **Controle via Bandeja do Sistema:** Oferece um ícone na bandeja do sistema que permite iniciar, pausar e fechar o programa facilmente.
+- **Configurador:** Permite ajustar as configurações de tempo de inatividade, intervalo entre movimentos, permissões de tela de bloqueio, hibernação e suspensão, ativação de movimento do mouse e movimentos múltiplos do mouse diretamente a partir do menu da bandeja do sistema.
+- **Persistência de Configurações:** Salva e carrega configurações automaticamente entre reinicializações.
 
 ## Requisitos
 
@@ -43,7 +45,20 @@ MoveMouseTray é um utilitário simples para Windows que simula a atividade do m
 2. Um ícone aparecerá na bandeja do sistema. Clique com o botão direito no ícone para acessar o menu:
    - **Start:** Inicia o monitoramento de inatividade e a movimentação do mouse.
    - **Stop:** Pausa a movimentação do mouse.
+   - **Configurador:** Abre a janela de configurações para ajustar os parâmetros do programa.
    - **Quit:** Fecha o programa.
+
+## Configurador
+
+O configurador permite ajustar as seguintes opções:
+- **Tempo de Inatividade:** Tempo em segundos antes de o mouse começar a se mover após detectar inatividade.
+- **Intervalo entre Movimentos:** Intervalo em segundos entre cada movimento do mouse.
+- **Permitir Tela de Bloqueio:** Ativar ou desativar a permissão para o sistema bloquear a tela.
+- **Permitir Hibernação:** Ativar ou desativar a permissão para o sistema hibernar.
+- **Permitir Suspensão:** Ativar ou desativar a permissão para o sistema entrar em suspensão.
+- **Ativar Movimento do Mouse:** Ativar ou desativar o movimento automático do mouse.
+- **Ativar Movimentos Múltiplos:** Ativar ou desativar múltiplos movimentos do mouse.
+- **Quantidade de Movimentos Múltiplos:** Número de movimentos múltiplos do mouse.
 
 ## Contribuição
 
